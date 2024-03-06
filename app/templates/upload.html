@@ -5,14 +5,6 @@
 
 {% include 'flash_messages.html' %}
 
-{% with messages = get_flashed_messages(with_categories=True) %} {% if messages %}
-  <ul class="flashes">
-    {% for category, message in messages %}
-    <li class="flash {{ category }}">{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %} {% endwith %}
-
 {# Add the appropriate method and enctype attributes to the form tag to allow for file uploads #}
 <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
   {# Add the file upload field as you learnt for Flask-WTF #}

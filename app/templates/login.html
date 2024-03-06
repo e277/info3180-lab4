@@ -2,14 +2,6 @@
 
 {% block main %}
 
-{% with messages = get_flashed_messages(with_categories=True) %} {% if messages %}
-  <ul class="flashes">
-    {% for category, message in messages %}
-    <li class="flash {{ category }}">{{ message }}</li>
-    {% endfor %}
-  </ul>
-{% endif %} {% endwith %}
-
 <form class="form-login m-auto" method="post">
   {{ form.csrf_token }}
   <h2>Please sign in</h2>

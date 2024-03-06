@@ -58,7 +58,7 @@ def get_uploaded_images():
 
 
 # Test image path
-print("Image list: ", get_uploaded_images())
+# print("Image list: ", get_uploaded_images())
             
 @app.route('/uploads/<filename>')
 def get_images(filename):
@@ -97,6 +97,13 @@ def login():
         flash('Logged in successfully.', 'success')
         return redirect(url_for("upload"))  # The user should be redirected to the upload form instead
     return render_template("login.html", form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('home'))
 
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
