@@ -1,6 +1,6 @@
 import os
 from app import app, db, login_manager
-from flask import render_template, request, redirect, url_for, flash, session, abort
+from flask import render_template, request, redirect, url_for, flash, session, abort, send_from_directory
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -43,6 +43,31 @@ def upload():
 
     return render_template('upload.html', form=form)
 
+def get_uploaded_images():
+    rootdir = os.getcwd()
+    # print(rootdir)
+    image_list = []
+    for subdir, dirs, files in os.walk(os.path.join(rootdir, app.config['UPLOAD_FOLDER'])):
+        for file in files:
+            # print(os.path.join(subdir, file))
+            if file.endswith(('.jpg', '.png', '.jpeg')):
+                full_path = os.path.join(subdir, file)
+                relative_path = os.path.relpath(full_path, os.path.join(rootdir, app.config['UPLOAD_FOLDER']))
+                image_list.append(relative_path)
+    return image_list
+
+
+# Test image path
+print("Image list: ", get_uploaded_images())
+            
+@app.route('/uploads/<filename>')
+def get_images(filename):
+    return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)
+
+@app.route('/files')
+@login_required
+def files():
+    return render_template('files.html', images=get_uploaded_images())
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
